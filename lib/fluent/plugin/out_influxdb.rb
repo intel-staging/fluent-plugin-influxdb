@@ -131,7 +131,7 @@ DESC
     tag = chunk.metadata.tag
     chunk.msgpack_each do |time, record|
       log.debug "Tamir record - #{record}, record keys #{record.keys}"
-      next if record.keys.include? "table_name" && record.keys["table_name"] != "container_metrics"
+      next if record.keys.include? "table_name" && record["table_name"] != "container_metrics"
       timestamp = precision_time(Time.parse(record.delete(@time_key)))
       if tag_keys.empty? && !@auto_tags
         values = record
