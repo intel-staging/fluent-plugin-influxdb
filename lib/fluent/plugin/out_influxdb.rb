@@ -130,6 +130,7 @@ DESC
     points = []
     tag = chunk.metadata.tag
     chunk.msgpack_each do |time, record|
+      next if record.keys.include? "table_name" && record.keys["table_name"] != "container_metrics"
       timestamp = precision_time(Time.parse(record.delete(@time_key)))
       if tag_keys.empty? && !@auto_tags
         values = record
@@ -138,6 +139,7 @@ DESC
         values = {}
         tags = {}
         record.each_pair do |k, v|
+          next if k == "table_name"
           if (@auto_tags && v.is_a?(String)) || @tag_keys.include?(k)
             # If the tag value is not nil, empty, or a space, add the tag
             if v.to_s.strip != ''
